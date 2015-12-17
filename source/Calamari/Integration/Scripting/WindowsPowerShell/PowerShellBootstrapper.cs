@@ -1,9 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Calamari.Deployment;
 using Calamari.Integration.Processes;
+using Calamari.Integration.Scripting.WindowsPowerShell.ScriptSignature;
 using Calamari.Util;
 using Octostache;
 
@@ -74,6 +77,8 @@ namespace Calamari.Integration.Scripting.WindowsPowerShell
                 writer.WriteLine(builder.ToString());
                 writer.Flush();
             }
+
+            new ScriptSigner().SignFile(bootstrapFile, "CN=PowerShell User");
 
             File.SetAttributes(bootstrapFile, FileAttributes.Hidden);
             return bootstrapFile;

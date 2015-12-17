@@ -205,6 +205,10 @@
     <Compile Include="Integration\Scripting\CombinedScriptEngine.cs" />
     <Compile Include="Integration\Scripting\ScriptEngineRegistry.cs" />
     <Compile Include="Integration\Scripting\ScriptType.cs" />
+    <Compile Include="Integration\Scripting\WindowsPowerShell\ScriptSignature\NativeMethods.cs" />
+    <Compile Include="Integration\Scripting\WindowsPowerShell\ScriptSignature\ScriptSigner.cs" />
+    <Compile Include="Integration\Scripting\WindowsPowerShell\ScriptSignature\SecuritySupport.cs" />
+    <Compile Include="Integration\Scripting\WindowsPowerShell\ScriptSignature\SignatureHelper.cs" />
     <Compile Include="Util\AssemblyExtensions.cs" />
     <Compile Include="Util\HashCalculator.cs" />
     <Compile Include="Util\AesEncryption.cs" />
