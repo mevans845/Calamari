@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Calamari.Deployment;
+using Calamari.Integration.Certificates;
 using Calamari.Integration.Processes;
 using Calamari.Integration.Scripting.WindowsPowerShell.ScriptSignature;
 using Calamari.Util;
@@ -78,7 +79,9 @@ namespace Calamari.Integration.Scripting.WindowsPowerShell
                 writer.Flush();
             }
 
-            new ScriptSigner().SignFile(bootstrapFile, "CN=PowerShell User");
+            
+
+            new ScriptSigner(new CalamariCertificateStore()).SignFile(bootstrapFile, "CN=PowerShell User");
 
             File.SetAttributes(bootstrapFile, FileAttributes.Hidden);
             return bootstrapFile;

@@ -27,27 +27,27 @@ namespace Calamari.Integration.Scripting.WindowsPowerShell.ScriptSignature
             {
                 num = Marshal.AllocCoTaskMem(Marshal.SizeOf(wizDigitalSignInfo));
                 Marshal.StructureToPtr(wizDigitalSignInfo, num, false);
-                if (
-                    !NativeMethods.CryptUIWizDigitalSign(NativeMethods.CRYPTUI_WIZ_NO_UI, IntPtr.Zero, IntPtr.Zero, num,
-                        IntPtr.Zero))
+                var sign = NativeMethods.CryptUIWizDigitalSign(NativeMethods.CRYPTUI_WIZ_NO_UI, IntPtr.Zero, IntPtr.Zero,
+                    num, IntPtr.Zero);
+                if (sign)
+                    return;
+
+                var error = GetLastWin32Error();
+                switch (error)
                 {
-                    var error = GetLastWin32Error();
-                    switch (error)
-                    {
-                        case 2147500037U:
-                        case 2147942401U:
-                        case 2147954407U:
-                            break;
-                        case 2148073480U:
-                            throw new ArgumentException("InvalidHashAlgorithm");
-                        default:
-                            throw new Exception(string.Format("CryptUIWizDigitalSign: failed: {0:x}", (object)error));
-                    }
+                    case 2147500037U:
+                    case 2147942401U:
+                    case 2147954407U:
+                        break;
+                    case 2148073480U:
+                        throw new ArgumentException("InvalidHashAlgorithm");
+                    default:
+                        throw new Exception(string.Format("CryptUIWizDigitalSign: failed: {0:x}", (object) error));
                 }
             }
             finally
             {
-                Marshal.DestroyStructure(num, typeof(NativeMethods.CRYPTUI_WIZ_DIGITAL_SIGN_INFO));
+                Marshal.DestroyStructure(num, typeof (NativeMethods.CRYPTUI_WIZ_DIGITAL_SIGN_INFO));
                 Marshal.FreeCoTaskMem(num);
             }
         }

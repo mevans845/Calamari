@@ -21,6 +21,26 @@ namespace Calamari.Integration.Certificates
             return GetOrAdd(thumbprint, bytes, new X509Store(storeName, StoreLocation.CurrentUser));
         }
 
+        public X509Certificate2 GetByThumbprint(string thumbprint, string storeName = "MY", StoreLocation storeLocation = StoreLocation.CurrentUser)
+        {
+            var store = new X509Store(storeName, storeLocation);
+            store.Open(OpenFlags.ReadOnly);
+
+            Log.Verbose("Loading certificate with thumbprint: " + thumbprint);
+            var certificateFromStore =
+                store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false)
+                    .OfType<X509Certificate2>()
+                    .FirstOrDefault();
+            if (certificateFromStore != null)
+            {
+                Log.Verbose("Certificate was found in store");
+                return certificateFromStore;
+            }
+            throw new Exception("Unable to load certificate with thumbprint: " + thumbprint);
+        }
+
+
+
         static X509Certificate2 GetOrAdd(string thumbprint, string bytes, X509Store store)
         {
             store.Open(OpenFlags.ReadWrite);

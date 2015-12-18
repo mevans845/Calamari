@@ -6,5 +6,7 @@ namespace Calamari.Integration.Certificates
     {
         X509Certificate2 GetOrAdd(string thumbprint, string bytes);
         X509Certificate2 GetOrAdd(string thumbprint, string bytes, StoreName storeName);
+
+        X509Certificate2 GetByThumbprint(string thumbprint, string storeName = "MY", StoreLocation storeLocation = StoreLocation.CurrentUser);
     }
 }
