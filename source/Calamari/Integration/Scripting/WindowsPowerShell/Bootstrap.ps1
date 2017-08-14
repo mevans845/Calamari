@@ -176,6 +176,9 @@ function Write-Verbose([string]$message)
 
 function Write-Warning([string]$message)
 {
+	if ($WarningPreference -eq "SilentlyContinue") {
+		return
+	}
 	Write-Host "##octopus[stdout-warning]"
 	Write-Host $message
 	Write-Host "##octopus[stdout-default]"
